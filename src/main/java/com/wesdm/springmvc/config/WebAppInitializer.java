@@ -1,4 +1,4 @@
-package com.wesdm.springmvc;
+package com.wesdm.springmvc.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -16,7 +16,8 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 	}
 	
 	/**
-	 * used to configure the application context created by ContextLoaderListener
+	 * used to configure the application context created by ContextLoaderListener. expected to load the
+	 *  other beans in your application.
 	 */
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
@@ -24,7 +25,8 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 	}
 	
 	/**
-	 * define beans for DispatcherServlet’s application context
+	 * define beans for DispatcherServlet’s application context. expected to load beans containing web components 
+	 * such as controllers, view resolvers, and handler mappings
 	 */
 	@Override
 	protected Class<?>[] getServletConfigClasses() {

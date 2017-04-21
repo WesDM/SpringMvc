@@ -1,4 +1,4 @@
-package com.wesdm.springmvc;
+package com.wesdm.springmvc.config;
 
 /**
  * Hello world!
