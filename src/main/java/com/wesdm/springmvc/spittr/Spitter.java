@@ -1,11 +1,14 @@
 package com.wesdm.springmvc.spittr;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
 public class Spitter {
+	
 	private Long id;
 	@NotNull
 	@Size(min=5, max=16, message="{username.size}")
@@ -23,6 +26,20 @@ public class Spitter {
 	@Email(message="{email.valid}")
 	private String email;
 	
+	public Spitter(){
+		
+	}
+	
+	public Spitter(Long id, String username, String password, String firstName, String lastName, String email) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}	
+
 	public Long getId() {
 		return id;
 	}
@@ -58,5 +75,21 @@ public class Spitter {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Spitter other = (Spitter) obj;
+		return Objects.equals(this.id, other.id) &&
+				Objects.equals(this.username, other.username);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.id, this.username);
 	}
 }

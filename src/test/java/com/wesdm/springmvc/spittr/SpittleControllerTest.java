@@ -24,7 +24,7 @@ public class SpittleControllerTest {
 		SpittleRepository mockRepository = Mockito.mock(SpittleRepository.class);
 		Mockito.when(mockRepository.findOne(12345)).thenReturn(expectedSpittle);
 		SpittleController controller = new SpittleController(mockRepository);
-		MockMvc mockMvc = standaloneSetup(controller).build();
+		MockMvc mockMvc = standaloneSetup(controller).build();  //test in isolation
 		mockMvc.perform(get("/spittles/12345")).andExpect(view().name("spittle"))
 				.andExpect(model().attributeExists("spittle")).andExpect(model().attribute("spittle", expectedSpittle));
 	}
@@ -35,7 +35,7 @@ public class SpittleControllerTest {
 		SpittleRepository mockRepository = Mockito.mock(SpittleRepository.class);
 		Mockito.when(mockRepository.findSpittles(9223372036854775807l, 20)).thenReturn(expectedSpittles);
 		SpittleController controller = new SpittleController(mockRepository);
-		MockMvc mockMvc = standaloneSetup(controller).setSingleView(new InternalResourceView(viewsDir + "spittles.jsp"))
+		MockMvc mockMvc = standaloneSetup(controller).setSingleView(new InternalResourceView(viewsDir + "spittles.jsp"))  //since config done programtically, tells mockMvc to return single view
 				.build();
 		mockMvc.perform(get("/spittles")).andExpect(view().name("spittles"))
 				.andExpect(model().attributeExists("spittleList"))

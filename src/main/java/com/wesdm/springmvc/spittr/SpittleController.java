@@ -5,13 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/spittles")
+@RequestMapping("/spittles")  //handler mapping
 public class SpittleController {
 
 	private SpittleRepository spittleRepository;
@@ -30,7 +31,7 @@ public class SpittleController {
 	 * @param count
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)  //handler mapping
 	public String spittles(@RequestParam(value = "max", defaultValue = "9223372036854775807") long max,
 			@RequestParam(value = "count", defaultValue = "20") int count, Model model) {
 		model.addAttribute("spittleList", spittleRepository.findSpittles(max, count));
@@ -60,7 +61,8 @@ public class SpittleController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/{spittleId}", method = RequestMethod.GET)
+	//@RequestMapping(value = "/{spittleId}", method = RequestMethod.GET)   //same as below	
+	@GetMapping("/{spittleId}")
 	public String spittle(@PathVariable("spittleId") long spittleId, Model model) {
 		model.addAttribute(spittleRepository.findOne(spittleId));
 		return "spittle";
