@@ -12,7 +12,7 @@
 
 	<properties>
 		<springframework.version>4.3.7.RELEASE</springframework.version>
-
+		<springframework.security.version>4.2.2.RELEASE</springframework.security.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -63,6 +63,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springframework.security.version}</version>
 		</dependency>
 
 		<dependency>

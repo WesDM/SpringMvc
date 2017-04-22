@@ -41,7 +41,7 @@ public class TimeBasedInterceptor extends HandlerInterceptorAdapter {
 //		if (openingTime <= hour && hour < closingTime) {
 //			return true;
 //		}
-//		response.sendRedirect("/resources/error.html");
+		response.sendRedirect("/resources/error.html");
 		return false;
 	}
 }

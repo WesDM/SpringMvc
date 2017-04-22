@@ -54,7 +54,7 @@ public class SpitterController {
 		// redirect after the
 		// POST has completed processing so that a browser refresh won’t
 		// accidentally submit the
-		// fform a second time.
+		// form a second time.
 		return "redirect:/spitter/" + spitter.getUsername();
 	}
 
