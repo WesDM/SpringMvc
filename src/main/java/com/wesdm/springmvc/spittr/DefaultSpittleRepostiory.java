@@ -19,4 +19,10 @@ public class DefaultSpittleRepostiory implements SpittleRepository {
 		return null;
 	}
 
+	@Override
+	public void save(Spittle spittle) throws DuplicateSpittleException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
