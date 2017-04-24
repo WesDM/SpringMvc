@@ -16,6 +16,8 @@ import org.mockito.Mockito;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceView;
 
+import com.wesdm.springmvc.spittr.db.SpittleRepository;
+
 public class SpittleControllerTest {
 
 	@Test

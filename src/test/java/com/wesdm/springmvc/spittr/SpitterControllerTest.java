@@ -13,6 +13,8 @@ import org.mockito.stubbing.Answer;
 import static org.mockito.Mockito.*;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.wesdm.springmvc.spittr.db.SpitterRepository;
+
 public class SpitterControllerTest {
 
 	@Test

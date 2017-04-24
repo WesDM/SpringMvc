@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.wesdm.springmvc.spittr.db.SpitterRepository;
+
 @Controller
 @RequestMapping("/spitter")
 public class SpitterController {

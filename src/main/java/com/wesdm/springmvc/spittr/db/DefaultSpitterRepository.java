@@ -1,6 +1,8 @@
-package com.wesdm.springmvc.spittr;
+package com.wesdm.springmvc.spittr.db;
 
 import org.springframework.stereotype.Repository;
+
+import com.wesdm.springmvc.spittr.Spitter;
 
 @Repository
 public class DefaultSpitterRepository implements SpitterRepository {

@@ -1,4 +1,6 @@
-package com.wesdm.springmvc.spittr;
+package com.wesdm.springmvc.spittr.db;
+
+import com.wesdm.springmvc.spittr.Spitter;
 
 public interface SpitterRepository {
 

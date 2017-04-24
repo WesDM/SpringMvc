@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.wesdm.springmvc.spittr.db.SpittleRepository;
 
 @Controller
 @RequestMapping("/spittles") // handler mapping
@@ -53,6 +56,15 @@ public class SpittleController {
 	public String showSpittle(@RequestParam("spittle_id") long spittleId, Model model) {
 		model.addAttribute(spittleRepository.findOne(spittleId));
 		return "spittle";
+	}
+
+	/*
+	 * Restful service. @ResponseBody converts based on HttpMessageConverter and adds data directly to response instead of looking for view.
+	 */
+	@RequestMapping(value = "/show", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public Spittle showSpittleRest(@PathVariable("spittle_id") long spittleId, Model model) {
+		return spittleRepository.findOne(spittleId);
 	}
 
 	/**
