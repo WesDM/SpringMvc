@@ -33,7 +33,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 	
 	/*
-	 * Conert Object to Json
+	 * Convert Object to Json
 	 */
 	@Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
