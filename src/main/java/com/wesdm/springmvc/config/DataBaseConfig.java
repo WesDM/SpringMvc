@@ -24,7 +24,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableJpaRepositories(basePackages="com.wesdm.springmvc.spittr.db")
 public class DataBaseConfig {
 
-	// Data source injected at runtime based on profile active
+	// dataSource injected at runtime based on profile active
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(DataSource dataSource) {
 

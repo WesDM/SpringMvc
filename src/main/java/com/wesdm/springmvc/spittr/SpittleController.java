@@ -2,6 +2,7 @@ package com.wesdm.springmvc.spittr;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.wesdm.springmvc.spittr.db.SpittleRepository;
 
+//@RestControllerm
 @Controller
 @RequestMapping("/spittles") // handler mapping
 public class SpittleController {
@@ -36,7 +38,7 @@ public class SpittleController {
 	}
 
 	/**
-	 * Example: /spittles/show?spittle_id=12345
+	 * Example: /spittles?max=238900&count=50
 	 * 
 	 * @param max
 	 * @param count
@@ -49,18 +51,45 @@ public class SpittleController {
 		return "spittles";
 	}
 
-	// @RequestMapping(method = RequestMethod.GET)
-	// public String spittles(Model model) {
-	// // Model is essentially a map (that is, a collection of key-value pairs)
-	// // that will be
-	// // handed off to the view so that the data can be rendered to the client
-	// model.addAttribute("spittleList",
-	// spittleRepository.findSpittles(Long.MAX_VALUE, 20));
-	// return "spittles";
-	// }
+	@RequestMapping(method = RequestMethod.GET)
+	public String spittles(Model model) {
+		// Model is essentially a map (that is, a collection of key-value pairs)
+		// that will be
+		// handed off to the view so that the data can be rendered to the client
+		model.addAttribute("spittleList", spittleRepository.findSpittles(Long.MAX_VALUE, 20));
+		return "spittles";
+	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	//you can add @ResponseBody to have Spring convert the returned List<Spittle> to the body of the response
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<Spittle> spittles(@RequestParam(value = "max", defaultValue = "9223372036854775807") long max,
+			@RequestParam(value = "count", defaultValue = "20") int count) {
+		return spittleRepository.findSpittles(max, count);
+	}
+
+	/*
+	 * Same as spittles(Model model). View is resolved from request path /spittles, therefore, view is spittles.jsp (or whatever however
+	 * InternalViewResolver is configured
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public List<Spittle> spittles() {
+		return spittleRepository.findSpittles(Long.MAX_VALUE, 20);
+	}
+
+	/*
+	 * spittles/show?spittle_id=12345 - Avoid this
+	 */
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public String showSpittle(@RequestParam("spittle_id") long spittleId, Model model) {
+		model.addAttribute(spittleRepository.findOne(spittleId));
+		return "spittle";
+	}
+
+	/*
+	 * . spittles/12345 - Use this form
+	 */
+	@RequestMapping(value = "/{spittleId}", method = RequestMethod.GET)
+	public String spittle(@PathVariable("spittleId") long spittleId, Model model) {
 		model.addAttribute(spittleRepository.findOne(spittleId));
 		return "spittle";
 	}
@@ -76,17 +105,24 @@ public class SpittleController {
 	 * Restful service. @ResponseBody converts based on HttpMessageConverter and adds data directly to response instead of looking for view. If this
 	 * were in a @RestController (available Spring 4.0+) class then @ResponseBody would be applied by default
 	 * 
-	 * Even better is to return a ResponseEntity which carries metadata such as headers and status code.
 	 */
-	@GetMapping(value = "/{id}", produces = "application/json")
+	@GetMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
 	// @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	// @ResponseBody - not needed when using ResponseEntity
-	public ResponseEntity<Spittle> showSpittleRest(@PathVariable("spittle_id") long spittleId, Model model) {
+	public @ResponseBody Spittle showSpittleRest(@PathVariable("spittle_id") long spittleId, Model model) {
 		Spittle spittle = spittleRepository.findOne(spittleId);
 		if (spittle == null) {
 			throw new SpittleNotFoundException(spittleId);
 		}
-		return new ResponseEntity<Spittle>(spittle, HttpStatus.OK);
+		return spittle;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public @ResponseBody Spittle spittleById(@PathVariable long id) {
+		Spittle spittle = spittleRepository.findOne(id);
+		if (spittle == null) {
+			throw new SpittleNotFoundException(id);
+		}
+		return spittle;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -94,14 +130,18 @@ public class SpittleController {
 		spittleRepository.save(new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
 		return "redirect:/spittles";
 	}
-	
+
 	/**
-	 * Build URL of saved spittle using UriComponentsBuilder based on environmnet
+	 * Tell client where new entity is. Build URL of saved spittle using UriComponentsBuilder based on environmnet
+	 * 
 	 * @param spittle
 	 * @param ucb
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	// @RequestBody tells Spring to find a message converter to convert a
+	// resource representation coming from a client into an object
+	// @ResponseBody - not needed when using ResponseEntity
 	public ResponseEntity<Spittle> saveSpittle(@RequestBody Spittle spittle, UriComponentsBuilder ucb) {
 		Spittle saved = spittleRepository.save(spittle);
 		HttpHeaders headers = new HttpHeaders();
